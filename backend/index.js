@@ -38,23 +38,31 @@ app.post("/query", (req, res) => {
 
     let resultData = [];
 
-    // ✅ JOIN handling (INNER and LEFT)
+    // ✅ JOIN handling (INNER, LEFT, RIGHT)
     if (ast.from.length === 2 && ast.from[1].join && ast.from[1].on) {
       const left = ast.from[0];
       const right = ast.from[1];
 
-      const leftAlias = left.as || left.table;
-      const rightAlias = right.as || right.table;
+      let leftAlias = left.as || left.table;
+      let rightAlias = right.as || right.table;
 
-      const leftData = tableData[leftAlias];
-      const rightData = tableData[rightAlias];
+      let leftData = tableData[leftAlias];
+      let rightData = tableData[rightAlias];
 
-      const leftField = right.on.left.column;
-      const rightField = right.on.right.column;
+      let leftField = right.on.left.column;
+      let rightField = right.on.right.column;
 
-      const joinType = right.join.toUpperCase(); // "INNER JOIN", "LEFT JOIN"
+      let joinType = right.join.toUpperCase(); // INNER JOIN, LEFT JOIN, RIGHT JOIN
 
       resultData = [];
+
+      // 🔁 Flip logic if RIGHT JOIN
+      if (joinType === "RIGHT JOIN") {
+        [leftAlias, rightAlias] = [rightAlias, leftAlias];
+        [leftData, rightData] = [rightData, leftData];
+        [leftField, rightField] = [rightField, leftField];
+        joinType = "LEFT JOIN"; // simulate as flipped LEFT JOIN
+      }
 
       for (const lRow of leftData) {
         let matchFound = false;
