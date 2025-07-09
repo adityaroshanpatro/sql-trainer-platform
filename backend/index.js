@@ -20,7 +20,7 @@ app.post("/query", (req, res) => {
 
   try {
     const ast = parser.astify(sql)[0]; // handles multi-statement
-    console.log("ast: ",JSON.stringify(ast))
+    
     const tables = ast.from.map(entry => ({
       name: entry.table,
       alias: entry.as || entry.table
@@ -122,7 +122,7 @@ app.post("/query", (req, res) => {
     let finalResult = [];
 
     if (ast.columns[0]?.expr?.column === "*") {
-        console.log("3")
+        
       finalResult = resultData.map(row => {
         if (typeof row === "object" && !Array.isArray(row)) {
           // Flatten joined row
@@ -131,7 +131,7 @@ app.post("/query", (req, res) => {
         return row;
       });
     } else {
-        console.log("3")
+        
       finalResult = resultData.map(row => {
         const selected = {};
 
