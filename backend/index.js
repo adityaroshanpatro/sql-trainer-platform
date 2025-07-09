@@ -22,6 +22,9 @@ app.post("/query", (req, res) => {
     const ast = parser.astify(sql); // parse SQL
     const tableName = ast.from[0].table;
     const tablePath = path.join(__dirname, "data", `${tableName}.json`);
+    console.log("ast: " , JSON.stringify(ast))
+    console.log("tableNameL " , tableName)
+    console.log("tablePath: " , tablePath)
     
     if (!fs.existsSync(tablePath)) {
       return res.status(404).json({ error: `Table ${tableName} not found` });
