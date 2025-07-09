@@ -19,7 +19,8 @@ app.post("/query", (req, res) => {
   const parser = new Parser();
 
   try {
-    const ast = parser.astify(sql); // handles multi-statement
+    const ast = parser.astify(sql)[0]; // handles multi-statement
+    console.log("ast: ",JSON.stringify(ast))
     const tables = ast.from.map(entry => ({
       name: entry.table,
       alias: entry.as || entry.table
@@ -37,7 +38,7 @@ app.post("/query", (req, res) => {
 
     let resultData = [];
 
-    // 🟡 JOIN handling (supports 1 INNER JOIN for now)
+    // ✅ JOIN handling (INNER and LEFT)
     if (ast.from.length === 2 && ast.from[1].join && ast.from[1].on) {
       const left = ast.from[0];
       const right = ast.from[1];
@@ -50,18 +51,29 @@ app.post("/query", (req, res) => {
 
       const leftField = right.on.left.column;
       const rightField = right.on.right.column;
-      
-      
+
+      const joinType = right.join.toUpperCase(); // "INNER JOIN", "LEFT JOIN"
+
       resultData = [];
 
       for (const lRow of leftData) {
+        let matchFound = false;
+
         for (const rRow of rightData) {
           if (lRow[leftField] === rRow[rightField]) {
+            matchFound = true;
             resultData.push({
               [leftAlias]: lRow,
               [rightAlias]: rRow
             });
           }
+        }
+
+        if (!matchFound && joinType === "LEFT JOIN") {
+          resultData.push({
+            [leftAlias]: lRow,
+            [rightAlias]: null
+          });
         }
       }
 
@@ -102,6 +114,7 @@ app.post("/query", (req, res) => {
     let finalResult = [];
 
     if (ast.columns[0]?.expr?.column === "*") {
+        console.log("3")
       finalResult = resultData.map(row => {
         if (typeof row === "object" && !Array.isArray(row)) {
           // Flatten joined row
@@ -110,6 +123,7 @@ app.post("/query", (req, res) => {
         return row;
       });
     } else {
+        console.log("3")
       finalResult = resultData.map(row => {
         const selected = {};
 
@@ -122,6 +136,8 @@ app.post("/query", (req, res) => {
             selected[alias] = row[tableAlias][colName];
           } else if (row[colName] !== undefined) {
             selected[alias] = row[colName];
+          } else {
+            selected[alias] = null;
           }
         });
 
