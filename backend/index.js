@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
 const { Parser } = require("node-sql-parser");
+const e = require("express");
 
 const app = express();
 const port = 4000;
@@ -19,7 +20,7 @@ app.post("/query", (req, res) => {
   const parser = new Parser();
 
   try {
-    const ast = parser.astify(sql); // parse SQL
+    const ast = parser.astify(sql)[0]; // parse SQL
     const tableName = ast.from[0].table;
     const tablePath = path.join(__dirname, "data", `${tableName}.json`);
     console.log("ast: " , JSON.stringify(ast))
@@ -31,15 +32,46 @@ app.post("/query", (req, res) => {
     }
 
     const data = JSON.parse(fs.readFileSync(tablePath, "utf-8"));
-    
+
+    let filteredData = data;
+
+    // ✅ WHERE clause logic (basic support for one condition)
+    if (ast.where) {
+      const { left, operator, right } = ast.where;
+
+      const field = left.column;
+      const value = right.value;
+
+      filteredData = data.filter(row => {
+        switch (operator) {
+          case "=":
+            return row[field] == value;
+          case ">":
+            return row[field] > value;
+          case "<":
+            return row[field] < value;
+          case ">=":
+            return row[field] >= value;
+          case "<=":
+            return row[field] <= value;
+          case "!=":
+          case "<>":
+            return row[field] != value;
+          default:
+            return false;
+        }
+      });
+    }
+
+    // ✅ Column selection
     let result = [];
 
     if (ast.columns[0]["expr"].column === "*") {
-      result = data;
+      result = filteredData;
     } else {
       const selectedCols = ast.columns.map(col => col.expr.column);
 
-      result = data.map(row => {
+      result = filteredData.map(row => {
         let selected = {};
         selectedCols.forEach(col => {
           if (row.hasOwnProperty(col)) {
