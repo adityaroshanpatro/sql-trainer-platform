@@ -1,4 +1,4 @@
 [
-  { "id": 1, "name": "Alice", "salary": 50000 },
-  { "id": 2, "name": "Bob", "salary": 60000 }
+  { "id": 1, "name": "Alice", "salary": 50000 ,"dept_id": 10},
+  { "id": 2, "name": "Bob", "salary": 60000 ,"dept_id": 20}
 ]
