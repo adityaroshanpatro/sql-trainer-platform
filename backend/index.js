@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 app.post("/query", (req, res) => {
   const { sql } = req.body;
-//   console.log("1")
+
   if (!sql) return res.status(400).json({ error: "Missing SQL query" });
 
   const parser = new Parser();
@@ -22,15 +22,13 @@ app.post("/query", (req, res) => {
     const ast = parser.astify(sql); // parse SQL
     const tableName = ast.from[0].table;
     const tablePath = path.join(__dirname, "data", `${tableName}.json`);
-    // console.log("2: ",tableName)
-    // console.log("3: ",tablePath)
+    
     if (!fs.existsSync(tablePath)) {
       return res.status(404).json({ error: `Table ${tableName} not found` });
     }
 
     const data = JSON.parse(fs.readFileSync(tablePath, "utf-8"));
-    // console.log("data: ",data)
-    // console.log("ast: ",JSON.stringify(ast))
+    
     let result = [];
 
     if (ast.columns[0]["expr"].column === "*") {
