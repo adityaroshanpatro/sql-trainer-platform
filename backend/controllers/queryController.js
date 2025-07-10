@@ -3,6 +3,7 @@ const { loadTables } = require("../utils/tableLoader");
 const { handleJoinQuery } = require("../utils/joinHandler");
 const { applyWhereFilter } = require("../utils/whereHandler");
 const { selectColumns } = require("../utils/columnSelector");
+const { groupByAndAggregate } = require("../utils/groupByHandler");
 
 function handleQuery(req, res) {
   const parser = new Parser();
@@ -25,7 +26,15 @@ function handleQuery(req, res) {
     } else {
       const mainAlias = tables[0].alias;
       resultData = tableData[mainAlias];
-      if (ast.where) resultData = applyWhereFilter(resultData, ast.where);
+      if (ast.where) {
+        resultData = applyWhereFilter(resultData, ast.where);
+      }
+    }
+
+    if (ast.groupby) {
+      const groupCols = ast.groupby.columns.map(g => g.column);
+      const finalResult = groupByAndAggregate(resultData, groupCols, ast.columns);
+      return res.json({ rows: finalResult });
     }
 
     const finalResult = selectColumns(resultData, ast.columns);
