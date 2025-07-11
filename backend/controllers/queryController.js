@@ -5,6 +5,7 @@ const { applyWhereFilter } = require("../utils/whereHandler");
 const { selectColumns } = require("../utils/columnSelector");
 const { groupByAndAggregate } = require("../utils/groupByHandler");
 const { applyOrderBy } = require("../utils/orderByHandler");
+const { applyLimit } = require("../utils/limitHandler");
 
 function handleQuery(req, res) {
   const parser = new Parser();
@@ -38,6 +39,8 @@ function handleQuery(req, res) {
 
       // ORDER BY (on grouped result)
       finalResult = applyOrderBy(finalResult, ast.orderby);
+      finalResult = applyLimit(finalResult, ast.limit);
+      
 
       return res.json({ rows: finalResult });
    }
@@ -49,6 +52,8 @@ function handleQuery(req, res) {
     // ORDER BY
     
     finalResult = applyOrderBy(finalResult, ast.orderby);
+
+    finalResult = applyLimit(finalResult, ast.limit);
 
     return res.json({ rows: finalResult });
 
