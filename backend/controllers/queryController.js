@@ -7,6 +7,7 @@ const { groupByAndAggregate } = require("../utils/groupByHandler");
 const { applyOrderBy } = require("../utils/orderByHandler");
 const { applyLimit } = require("../utils/limitHandler");
 const { applyHaving } = require("../utils/havingHandler");
+const { removeDuplicates } = require("../utils/deduplicate");
 
 function handleQuery(req, res) {
   const parser = new Parser();
@@ -48,6 +49,9 @@ function handleQuery(req, res) {
     // SELECT
    
     let finalResult = selectColumns(resultData, ast.columns);
+    if (ast.distinct) {
+        finalResult = removeDuplicates(finalResult);
+    }
  
     // ORDER BY
     
