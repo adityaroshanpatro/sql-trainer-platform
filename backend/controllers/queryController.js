@@ -4,6 +4,7 @@ const { handleJoinQuery } = require("../utils/joinHandler");
 const { applyWhereFilter } = require("../utils/whereHandler");
 const { selectColumns } = require("../utils/columnSelector");
 const { groupByAndAggregate } = require("../utils/groupByHandler");
+const { applyOrderBy } = require("../utils/orderByHandler");
 
 function handleQuery(req, res) {
   const parser = new Parser();
@@ -33,12 +34,23 @@ function handleQuery(req, res) {
 
     if (ast.groupby) {
       const groupCols = ast.groupby.columns.map(g => g.column);
-      const finalResult = groupByAndAggregate(resultData, groupCols, ast.columns);
-      return res.json({ rows: finalResult });
-    }
+      let finalResult = groupByAndAggregate(resultData, groupCols, ast.columns);
 
-    const finalResult = selectColumns(resultData, ast.columns);
-    res.json({ rows: finalResult });
+      // ORDER BY (on grouped result)
+      finalResult = applyOrderBy(finalResult, ast.orderby);
+
+      return res.json({ rows: finalResult });
+   }
+
+    // SELECT
+   
+    let finalResult = selectColumns(resultData, ast.columns);
+ 
+    // ORDER BY
+    
+    finalResult = applyOrderBy(finalResult, ast.orderby);
+
+    return res.json({ rows: finalResult });
 
   } catch (err) {
     res.status(500).json({ error: "SQL parsing or execution failed", details: err.message });
