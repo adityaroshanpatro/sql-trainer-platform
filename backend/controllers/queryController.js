@@ -6,6 +6,7 @@ const { selectColumns } = require("../utils/columnSelector");
 const { groupByAndAggregate } = require("../utils/groupByHandler");
 const { applyOrderBy } = require("../utils/orderByHandler");
 const { applyLimit } = require("../utils/limitHandler");
+const { applyHaving } = require("../utils/havingHandler");
 
 function handleQuery(req, res) {
   const parser = new Parser();
@@ -36,8 +37,7 @@ function handleQuery(req, res) {
     if (ast.groupby) {
       const groupCols = ast.groupby.columns.map(g => g.column);
       let finalResult = groupByAndAggregate(resultData, groupCols, ast.columns);
-
-      // ORDER BY (on grouped result)
+      finalResult = applyHaving(finalResult, ast.having);
       finalResult = applyOrderBy(finalResult, ast.orderby);
       finalResult = applyLimit(finalResult, ast.limit);
       
