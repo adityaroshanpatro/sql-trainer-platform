@@ -1,13 +1,9 @@
-function applyWhereFilter(data, whereClause) {
-  return data.filter(row => evaluateCondition(whereClause, row));
-}
+const { handleQueryFromAST } = require("./subqueryEvaluator");
 
-function evaluateCondition(expr, row) {
-  if (!expr) return true;
-
+function evaluateCondition(expr, row, tableData) {
   switch (expr.type) {
     case "binary_expr":
-      return evalBinary(expr, row);
+      return evalBinary(expr, row, tableData);
     case "in_expr":
       return evalIn(expr, row);
     case "between_expr":
@@ -15,76 +11,48 @@ function evaluateCondition(expr, row) {
     case "like_expr":
       return evalLike(expr, row);
     case "logical_expr":
-      return evalLogical(expr, row);
+      return evalLogical(expr, row, tableData);
     default:
       return true;
   }
 }
 
-function evalBinary(expr, row) {
-  const field = expr.left.column;
-  const value = expr.right.value;
+function evalBinary(expr, row, tableData) {
+  let { operator, left, right } = expr;
+  const field = left.column;
+  const leftValue = row[field] ?? Object.values(row)[0]?.[field];
+  let rightValue;
 
-  switch (expr.operator) {
-    case "=":
-      return row[field] == value;
-    case "!=":
-    case "<>":
-      return row[field] != value;
-    case ">":
-      return row[field] > value;
-    case "<":
-      return row[field] < value;
-    case ">=":
-      return row[field] >= value;
-    case "<=":
-      return row[field] <= value;
-    default:
-      return false;
-  }
-}
-
-function evalIn(expr, row) {
-  const field = expr.left.column;
-  const values = expr.right.value.map(v => {
-    if (v.type === "number" || v.type === "string") {
-      return v.value;
+  if (right.ast) {
+    // ✅ Scalar subquery
+    const subResult = handleQueryFromAST(right.ast, tableData);
+    if (Array.isArray(subResult) && subResult.length > 0) {
+      const val = Object.values(subResult[0])[0];
+      console.log("Subquery result:", val);
+      rightValue = val;
+    } else {
+      rightValue = null;
     }
-    return null;
-  });
+  } else {
+    // Normal constant
+    rightValue = right.value;
+  }
 
-  return values.includes(row[field]);
-}
-
-function evalBetween(expr, row) {
-  const field = expr.expr.column;
-  const [low, high] = [expr.left.value, expr.right.value];
-  const val = row[field];
-  return val >= low && val <= high;
-}
-
-function evalLike(expr, row) {
-  const field = expr.left.column;
-  const pattern = expr.right.value.replace(/%/g, ".*"); // convert SQL % to regex .*
-  const regex = new RegExp(`^${pattern}$`, "i"); // case-insensitive
-  return regex.test(row[field]);
-}
-
-function evalLogical(expr, row) {
-  const left = evaluateCondition(expr.left, row);
-  const right = evaluateCondition(expr.right, row);
-
-  switch (expr.operator.toUpperCase()) {
-    case "AND":
-      return left && right;
-    case "OR":
-      return left || right;
-    default:
-      return false;
+  // Apply the operator
+  switch (operator) {
+    case "=": return leftValue == rightValue;
+    case "!=":
+    case "<>": return leftValue != rightValue;
+    case ">": return leftValue > rightValue;
+    case "<": return leftValue < rightValue;
+    case ">=": return leftValue >= rightValue;
+    case "<=": return leftValue <= rightValue;
+    default: return false;
   }
 }
 
-module.exports = {
-  applyWhereFilter,
-  evaluateCondition
-};
+function applyWhereFilter(data, whereClause, tableData) {
+  return data.filter(row => evaluateCondition(whereClause, row, tableData));
+}
+
+module.exports = { applyWhereFilter };

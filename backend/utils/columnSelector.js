@@ -1,4 +1,7 @@
-function selectColumns(data, columns) {
+const { handleQueryFromAST } = require("./subqueryEvaluator");
+
+function selectColumns(data, columns, tableDataAll) {
+  // Handle SELECT * case
   if (columns[0]?.expr?.column === "*") {
     return data.map(row => Object.assign({}, ...Object.values(row)));
   }
@@ -6,26 +9,32 @@ function selectColumns(data, columns) {
   return data.map(row => {
     const selected = {};
 
-    columns.forEach(col => {
-      const colName = col.expr.column;
-      const tableAlias = col.expr.table || null;
-      const alias = col.as || colName;
+    for (const col of columns) {
+      const expr = col.expr;
+      const alias = col.as || (expr.table ? `${expr.table}.${expr.column}` : expr.column);
 
-      if (tableAlias && row[tableAlias] && colName in row[tableAlias]) {
-        selected[alias] = row[tableAlias][colName];
-      } else if (colName in row) {
-        selected[alias] = row[colName];
-      } else {
-        // Fallback: search in any nested object
-        for (const obj of Object.values(row)) {
-          if (obj && typeof obj === "object" && colName in obj) {
-            selected[alias] = obj[colName];
-            return;
-          }
+      if (expr.type === "column_ref") {
+        const table = expr.table;
+        const column = expr.column;
+
+        if (row[table]) {
+          selected[alias] = row[table][column];
+        } else if (row[column] !== undefined) {
+          selected[alias] = row[column];
+        } else {
+          selected[alias] = null;
         }
+
+      } else if (expr.type === "select") {
+        // Scalar subquery
+        const subResult = handleQueryFromAST(expr, tableDataAll);
+        selected[alias] = Array.isArray(subResult) && subResult.length > 0
+          ? Object.values(subResult[0])[0]
+          : null;
+      } else {
         selected[alias] = null;
       }
-    });
+    }
 
     return selected;
   });

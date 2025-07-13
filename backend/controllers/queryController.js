@@ -22,6 +22,7 @@ function handleQuery(req, res) {
 
   try {
     const ast = parser.astify(sql)[0];
+    console.log("AST: ",JSON.stringify(ast, null, 2))
     if (ast.type === "insert") {
       const result = handleInsert(ast);
       return res.json(result);
@@ -50,7 +51,8 @@ function handleQuery(req, res) {
       const mainAlias = tables[0].alias;
       resultData = tableData[mainAlias];
       if (ast.where) {
-        resultData = applyWhereFilter(resultData, ast.where);
+        console.log("*********************************************")
+        resultData = applyWhereFilter(resultData, ast.where, tableData);
       }
     }
 
