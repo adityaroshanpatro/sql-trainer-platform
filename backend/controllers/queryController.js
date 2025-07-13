@@ -8,6 +8,11 @@ const { applyOrderBy } = require("../utils/orderByHandler");
 const { applyLimit } = require("../utils/limitHandler");
 const { applyHaving } = require("../utils/havingHandler");
 const { removeDuplicates } = require("../utils/deduplicate");
+const {
+  handleInsert,
+  handleUpdate,
+  handleDelete,
+} = require("../utils/dmlHandler");
 
 function handleQuery(req, res) {
   const parser = new Parser();
@@ -17,6 +22,20 @@ function handleQuery(req, res) {
 
   try {
     const ast = parser.astify(sql)[0];
+    if (ast.type === "insert") {
+      const result = handleInsert(ast);
+      return res.json(result);
+    }
+    
+    if (ast.type === "update") {
+      const result = handleUpdate(ast);
+      return res.json(result);
+    }
+    
+    if (ast.type === "delete") {
+      const result = handleDelete(ast);
+      return res.json(result);
+    }
     const tables = ast.from.map(entry => ({
       name: entry.table,
       alias: entry.as || entry.table
