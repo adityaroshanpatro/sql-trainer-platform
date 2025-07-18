@@ -1,6 +1,7 @@
 // src/components/SQLTool.jsx
 import React, { useState } from "react";
 import axios from "axios";
+import "./SQLTool.css"; // ⬅️ Import custom styles
 
 const SQLTool = () => {
   const [query, setQuery] = useState("SELECT * FROM employee");
@@ -30,24 +31,26 @@ const SQLTool = () => {
       </button>
 
       {result.length > 0 && (
-        <table border="1" style={{ marginTop: "1rem" }}>
-          <thead>
-            <tr>
-              {Object.keys(result[0]).map((key) => (
-                <th key={key}>{key}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {result.map((row, i) => (
-              <tr key={i}>
-                {Object.values(row).map((val, j) => (
-                  <td key={j}>{val}</td>
+        <div className="result-table-container">
+          <table className="result-table">
+            <thead>
+              <tr>
+                {Object.keys(result[0]).map((key) => (
+                  <th key={key}>{key}</th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {result.map((row, i) => (
+                <tr key={i}>
+                  {Object.values(row).map((val, j) => (
+                    <td key={j}>{val}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
