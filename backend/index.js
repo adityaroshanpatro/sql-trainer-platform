@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const { handleQuery } = require("./controllers/queryController");
+const { handleQuery, handleTableQuery } = require("./controllers/queryController");
 const { resetData } = require("./utils/resetData");
 
 const app = express();
@@ -12,6 +12,8 @@ app.use(bodyParser.json());
 resetData();
 
 app.post("/query", handleQuery);
+
+app.get("/tables", handleTableQuery)
 
 app.post("/reset", (req, res) => {
   try {

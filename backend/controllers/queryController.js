@@ -13,6 +13,8 @@ const {
   handleUpdate,
   handleDelete,
 } = require("../utils/dmlHandler");
+const path = require("path");
+const fs = require("fs");
 
 function handleQuery(req, res) {
   const parser = new Parser();
@@ -87,4 +89,31 @@ function handleQuery(req, res) {
   }
 }
 
-module.exports = { handleQuery };
+function handleTableQuery(req, res) {
+  const dataDir = path.join(__dirname, "..", "data");
+
+  fs.readdir(dataDir, (err, files) => {
+    if (err) {
+      return res.status(500).json({ error: "Failed to read tables", details: err.message });
+    }
+
+    const tables = [];
+
+    for (const file of files) {
+      if (file.endsWith(".json")) {
+        const tableName = path.basename(file, ".json");
+        try {
+          const filePath = path.join(dataDir, file);
+          const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+          tables.push({ [tableName]: data });
+        } catch (readErr) {
+          return res.status(500).json({ error: `Failed to read ${file}`, details: readErr.message });
+        }
+      }
+    }
+
+    return res.json({ tables });
+  });
+}
+
+module.exports = { handleQuery, handleTableQuery };

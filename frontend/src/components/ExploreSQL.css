@@ -1,0 +1,26 @@
+.table-preview {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 400px;
+  max-width: 100%;
+}
+
+.table-preview th,
+.table-preview td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table-preview th {
+  background-color: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+  .table-preview {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
