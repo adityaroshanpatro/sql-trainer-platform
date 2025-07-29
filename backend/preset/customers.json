@@ -1,0 +1,12 @@
+[
+  { "id": 1, "name": "Alice", "email": "alice@example.com", "city": "Delhi", "signup_date": "2024-01-15" },
+  { "id": 2, "name": "Bob", "email": "bob@example.com", "city": "Mumbai", "signup_date": "2024-02-10" },
+  { "id": 3, "name": "Charlie", "email": "charlie@example.com", "city": "Bangalore", "signup_date": "2024-03-22" },
+  { "id": 4, "name": "David", "email": "david@example.com", "city": "Pune", "signup_date": "2024-04-01" },
+  { "id": 5, "name": "Eva", "email": "eva@example.com", "city": "Hyderabad", "signup_date": "2024-04-12" },
+  { "id": 6, "name": "Frank", "email": "frank@example.com", "city": "Chennai", "signup_date": "2024-05-05" },
+  { "id": 7, "name": "Grace", "email": "grace@example.com", "city": "Kolkata", "signup_date": "2024-05-20" },
+  { "id": 8, "name": "Hannah", "email": "hannah@example.com", "city": "Ahmedabad", "signup_date": "2024-06-10" },
+  { "id": 9, "name": "Ivan", "email": "ivan@example.com", "city": "Jaipur", "signup_date": "2024-06-18" },
+  { "id": 10, "name": "Jack", "email": "jack@example.com", "city": "Lucknow", "signup_date": "2024-07-01" }
+]

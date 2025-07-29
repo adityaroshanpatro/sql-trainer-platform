@@ -1,0 +1,12 @@
+[
+  { "id": 1, "name": "Arjun", "age": 30, "gender": "M", "city": "Delhi" },
+  { "id": 2, "name": "Riya", "age": 25, "gender": "F", "city": "Mumbai" },
+  { "id": 3, "name": "Karan", "age": 45, "gender": "M", "city": "Pune" },
+  { "id": 4, "name": "Sneha", "age": 38, "gender": "F", "city": "Chennai" },
+  { "id": 5, "name": "Amit", "age": 50, "gender": "M", "city": "Kolkata" },
+  { "id": 6, "name": "Priya", "age": 28, "gender": "F", "city": "Bangalore" },
+  { "id": 7, "name": "Rakesh", "age": 60, "gender": "M", "city": "Hyderabad" },
+  { "id": 8, "name": "Neha", "age": 33, "gender": "F", "city": "Jaipur" },
+  { "id": 9, "name": "Vikram", "age": 41, "gender": "M", "city": "Ahmedabad" },
+  { "id": 10, "name": "Tina", "age": 36, "gender": "F", "city": "Surat" }
+]

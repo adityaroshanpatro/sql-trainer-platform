@@ -1,0 +1,12 @@
+[
+  { "id": 1, "name": "Mr. Sharma", "subject": "Math", "class_id": 101 },
+  { "id": 2, "name": "Ms. Verma", "subject": "Science", "class_id": 102 },
+  { "id": 3, "name": "Mr. Khan", "subject": "English", "class_id": 103 },
+  { "id": 4, "name": "Ms. Iyer", "subject": "History", "class_id": 104 },
+  { "id": 5, "name": "Mr. Das", "subject": "Geography", "class_id": 101 },
+  { "id": 6, "name": "Ms. Roy", "subject": "Physics", "class_id": 102 },
+  { "id": 7, "name": "Mr. Gupta", "subject": "Chemistry", "class_id": 103 },
+  { "id": 8, "name": "Ms. Nair", "subject": "Biology", "class_id": 104 },
+  { "id": 9, "name": "Mr. Dey", "subject": "Computer", "class_id": 101 },
+  { "id": 10, "name": "Ms. Jain", "subject": "Civics", "class_id": 104 }
+]

@@ -1,0 +1,12 @@
+[
+  { "project_id": 1, "project_name": "Apollo", "dept_id": 10 },
+  { "project_id": 2, "project_name": "Zeus", "dept_id": 20 },
+  { "project_id": 3, "project_name": "Hermes", "dept_id": 30 },
+  { "project_id": 4, "project_name": "Athena", "dept_id": 10 },
+  { "project_id": 5, "project_name": "Poseidon", "dept_id": 40 },
+  { "project_id": 6, "project_name": "Artemis", "dept_id": 30 },
+  { "project_id": 7, "project_name": "Hades", "dept_id": 20 },
+  { "project_id": 8, "project_name": "Demeter", "dept_id": 10 },
+  { "project_id": 9, "project_name": "Ares", "dept_id": 40 },
+  { "project_id": 10, "project_name": "Dionysus", "dept_id": 20 }
+]

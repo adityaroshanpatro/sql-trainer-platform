@@ -4,5 +4,9 @@
   { "id": 3, "name": "Charlie", "dept_id": 10, "salary": 7000 },
   { "id": 4, "name": "David", "dept_id": 30, "salary": 8000 },
   { "id": 5, "name": "Eve", "dept_id": 20, "salary": 6000 },
-  { "id": 6, "name": "Frank", "dept_id": 30, "salary": 9000 }
+  { "id": 6, "name": "Frank", "dept_id": 30, "salary": 9000 },
+  { "id": 7, "name": "Grace", "dept_id": 10, "salary": 7500 },
+  { "id": 8, "name": "Heidi", "dept_id": 40, "salary": 6500 },
+  { "id": 9, "name": "Ivan", "dept_id": 40, "salary": 6200 },
+  { "id": 10, "name": "Judy", "dept_id": 20, "salary": 7200 }
 ]

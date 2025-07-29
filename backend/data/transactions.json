@@ -1,0 +1,12 @@
+[
+  { "id": 101, "account_id": 1, "type": "Debit", "amount": 2000, "date": "2024-06-01" },
+  { "id": 102, "account_id": 2, "type": "Credit", "amount": 5000, "date": "2024-06-02" },
+  { "id": 103, "account_id": 3, "type": "Debit", "amount": 1000, "date": "2024-06-03" },
+  { "id": 104, "account_id": 4, "type": "Credit", "amount": 3000, "date": "2024-06-04" },
+  { "id": 105, "account_id": 5, "type": "Debit", "amount": 2500, "date": "2024-06-05" },
+  { "id": 106, "account_id": 6, "type": "Credit", "amount": 1500, "date": "2024-06-06" },
+  { "id": 107, "account_id": 7, "type": "Debit", "amount": 1000, "date": "2024-06-07" },
+  { "id": 108, "account_id": 8, "type": "Credit", "amount": 3500, "date": "2024-06-08" },
+  { "id": 109, "account_id": 9, "type": "Debit", "amount": 500, "date": "2024-06-09" },
+  { "id": 110, "account_id": 10, "type": "Credit", "amount": 2000, "date": "2024-06-10" }
+]

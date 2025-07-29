@@ -1,0 +1,12 @@
+[
+  { "id": 1, "name": "Amit", "class_id": 101, "grade": "A" },
+  { "id": 2, "name": "Priya", "class_id": 101, "grade": "B" },
+  { "id": 3, "name": "Ravi", "class_id": 102, "grade": "A" },
+  { "id": 4, "name": "Sneha", "class_id": 102, "grade": "C" },
+  { "id": 5, "name": "Kiran", "class_id": 103, "grade": "B" },
+  { "id": 6, "name": "Manoj", "class_id": 101, "grade": "A" },
+  { "id": 7, "name": "Divya", "class_id": 103, "grade": "B" },
+  { "id": 8, "name": "Anita", "class_id": 104, "grade": "A" },
+  { "id": 9, "name": "Ramesh", "class_id": 104, "grade": "C" },
+  { "id": 10, "name": "Sunita", "class_id": 102, "grade": "B" }
+]

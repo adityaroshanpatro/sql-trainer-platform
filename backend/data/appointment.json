@@ -1,0 +1,12 @@
+[
+  { "id": 1, "patient_id": 1, "doctor": "Dr. Gupta", "date": "2024-07-01", "status": "Completed" },
+  { "id": 2, "patient_id": 2, "doctor": "Dr. Rao", "date": "2024-07-02", "status": "Scheduled" },
+  { "id": 3, "patient_id": 3, "doctor": "Dr. Singh", "date": "2024-07-03", "status": "Cancelled" },
+  { "id": 4, "patient_id": 4, "doctor": "Dr. Mehta", "date": "2024-07-04", "status": "Completed" },
+  { "id": 5, "patient_id": 5, "doctor": "Dr. Desai", "date": "2024-07-05", "status": "Completed" },
+  { "id": 6, "patient_id": 6, "doctor": "Dr. Batra", "date": "2024-07-06", "status": "Scheduled" },
+  { "id": 7, "patient_id": 7, "doctor": "Dr. Nair", "date": "2024-07-07", "status": "Completed" },
+  { "id": 8, "patient_id": 8, "doctor": "Dr. Menon", "date": "2024-07-08", "status": "Completed" },
+  { "id": 9, "patient_id": 9, "doctor": "Dr. Das", "date": "2024-07-09", "status": "Scheduled" },
+  { "id": 10, "patient_id": 10, "doctor": "Dr. Khan", "date": "2024-07-10", "status": "Completed" }
+]
